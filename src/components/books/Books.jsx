@@ -1,26 +1,50 @@
-import { Button, Grid, TextField } from '@material-ui/core';
-import axios from 'axios';
+import { Grid, IconButton, InputBase, Paper, makeStyles } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import axios from '../../axios';
 import React, {useState} from 'react';
 import Book from '../book/Book';
+
+const useStyles = makeStyles(() => ({
+    root: {
+      padding: '10px 20px',
+      display: 'flex',
+      alignItems: 'center',
+      margin: '20px 20px',
+    },
+    input: {
+      flex: 1,
+    },
+    iconButton: {
+      padding: 10,
+    },
+  }));
 
 const Books = () => {
     const [title, setTitle]= useState('');
     const [books, setBooks] = useState([]);
 
+    const classes = useStyles();
+
     const handleSearch = async (e) => {
         e.preventDefault();
-        const res = await axios.get(`http://localhost:3001/book/${title}`);
+        const res = await axios.get(`/book/${title}`);
         setBooks(res.data.books);
     }
     return (
         <div className={'Books'}>
-            <Grid className={'search'} container spacing={4} justifyContent="flex-end">
-                <Grid>
-                    <Button onClick={handleSearch}>Search Books</Button>
-                </Grid>
-                <Grid>
-                    <TextField type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                </Grid>
+            <Grid className={'search'} container spacing={4}>
+                <Paper component="form" className={classes.root}>
+                    <InputBase
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className={classes.input}
+                        placeholder="Search Title"
+                        inputProps={{ 'aria-label': 'seach title' }}
+                    />
+                    <IconButton type="submit" onClick={handleSearch} className={classes.iconButton} aria-label="search">
+                        <SearchIcon />
+                    </IconButton>
+                </Paper>
             </Grid>
             <Grid className={'content'}>
                 {books.map((b) => (

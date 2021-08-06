@@ -4,9 +4,18 @@ const app = express();
 const port = 3001;
 
 const cors = require('cors');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api', createProxyMiddleware({ 
+  target: 'https://itbook.store',
+  pathRewrite: {
+    '^/api': '/1.0/search',
+  },
+  changeOrigin: true,
+}));
 
 app.listen(port, () => console.log(`Server started at port ${port}`));
 

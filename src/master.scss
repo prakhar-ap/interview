@@ -1,5 +1,17 @@
 @import "./components/book/Book.scss";
 @import "./components/books/Books.scss";
 @import "./components/details/Details.scss";
-
 @import "./components/common/images/ResponsiveImage.scss";
+
+:root {
+    --windowsMinWidth: 1000px;
+}
+
+body {
+    background-color: #e9edf0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--windowsMinWidth);
+}
